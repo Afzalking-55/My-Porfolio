@@ -1,28 +1,21 @@
 import type { TimelineEntry } from "@/lib/types";
 
 /* ============================================================
- * EXPERIENCE TIMELINE
- * ------------------------------------------------------------
- * Nothing is invented here. These are empty slots in the exact
- * shapes that matter (projects / freelance / business /
- * academic). Replace each [placeholder] with a real entry, or
- * delete the slot. Newest first.
+ * EXPERIENCE TIMELINE — §6 personalization (Mohamed Afzal).
+ * Exactly one real entry. Newest first. To add another:
+ * copy the block and fill it with facts only.
  * ============================================================ */
 
 export const experience: TimelineEntry[] = [
   {
-    period: "[Month Year – Month Year]",
-    title: "[What you worked on — e.g. Built an automation workflow for a small business]",
-    org: "[Freelance / own project / company — only if real]",
-    kind: "PROJECT",
-    description:
-      "[2–3 honest sentences: the problem, what you did, what you learned. Skip metrics you can't back up.]",
-  },
-  {
-    period: "[Month Year – Present]",
-    title: "[Business experiment / learning sprint / collaboration]",
-    org: "[Where or with whom]",
+    period: "10th-standard holidays · [year to be added]",
+    title: "Zlance — agency project",
+    org: "Self-started",
     kind: "BUSINESS",
-    description: "[What it is and where it currently stands.]",
+    description:
+      "Started during my 10th-standard holidays. We directly reached out to second-hand car " +
+      "dealers and other local sellers and promoted their listings through Facebook groups — " +
+      "acquiring 15 clients in approximately 2 months. My role covered client outreach, " +
+      "explaining the service, acquiring clients, and handling the client side of the project.",
   },
 ];

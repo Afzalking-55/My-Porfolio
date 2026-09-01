@@ -10,7 +10,7 @@ export function Experience() {
         <SectionHead
           index="04"
           title={<>The <span className="serif-it">path</span> so far.</>}
-          lede="Projects, freelance work, business experiments, academic work — only what actually happened. Entries live in content/experience.ts, newest first."
+          lede="Projects, freelance work, business experiments, academic work — only what actually happened."
         />
 
         <div className="timeline">

@@ -350,6 +350,9 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .edu-card .period { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
 .edu-card h3 { font-size: 24px; }
 .edu-card .field { color: var(--accent); font-size: 14px; }
+.edu-result { display: flex; align-items: baseline; gap: 12px; margin-top: 2px; }
+.edu-result-label { font-family: var(--font-mono), monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--faint); }
+.edu-result b { font-family: var(--font-display), Georgia, serif; font-weight: 500; font-size: 17px; color: var(--ink); }
 .edu-card p { color: var(--dim); font-size: 14.5px; }
 
 /* ---------- currently building ---------- */

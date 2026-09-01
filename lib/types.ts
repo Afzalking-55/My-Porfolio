@@ -41,6 +41,8 @@ export interface EducationEntry {
   institution: string;
   degree: string;
   field: string;
+  /** optional exam result line, e.g. "444 / 500 · 88.8%" — owner-supplied only */
+  result?: string;
   description: string;
   relevant: string[];
 }

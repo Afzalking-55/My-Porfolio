@@ -1,17 +1,18 @@
 /* ============================================================
  * Your name, tagline, and headline copy.
+ * §1 personalization applied — real values from Mohamed Afzal.
  * ============================================================ */
 
 export const profile = {
   /** Shown in the hero, nav, footer and browser tab */
-  name: "[Your Name]",
+  name: "Mohamed Afzal",
 
   /** Short professional tagline under your name */
   tagline: "Building ideas into reality.",
 
   /** One or two sentences for metadata + footer */
   summary:
-    "Ambitious technology enthusiast exploring AI, automation, web development and entrepreneurship.",
+    "Ambitious technology enthusiast exploring AI, automation, web development, and entrepreneurship.",
 
   /**
    * PORTRAIT: place an image at public/images/profile.jpg
@@ -23,9 +24,9 @@ export const profile = {
 
 /**
  * The short introduction paragraph in the hero.
- * Keep it honest — this site is designed to grow with your real wins.
+ * Your wording, verbatim.
  */
 export const heroIntro =
-  "I work at the intersection of AI, automation, web development, technology and " +
-  "business — turning ideas into working projects, experimenting relentlessly, and " +
-  "learning in public as I build toward something bigger.";
+  "I'm an ambitious technology enthusiast exploring AI, automation, web development, " +
+  "and entrepreneurship. I enjoy turning ideas into real-world projects, experimenting " +
+  "with new technologies, and continuously learning while building toward bigger goals.";

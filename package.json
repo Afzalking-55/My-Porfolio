@@ -13,6 +13,8 @@
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@vercel/blob": "^2.8.0",
+    "@vercel/kv": "^3.0.0",
     "jose": "^5.9.6",
     "next": "^15.5.0",
     "react": "^19.0.0",

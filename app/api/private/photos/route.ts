@@ -5,14 +5,21 @@
 import { NextResponse } from "next/server";
 import { guardJson, NO_STORE } from "@/app/api/private/_guard";
 import { getPhotos, savePhoto } from "@/lib/private-data";
+import type { PrivatePhoto } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+/** the private blob-store locator never leaves the server */
+function publicMeta(p: PrivatePhoto) {
+  const { blobUrl: _drop, ...rest } = p;
+  return rest;
+}
+
 export async function GET() {
   const denied = await guardJson();
   if (denied) return denied;
-  return NextResponse.json(await getPhotos(), { headers: { ...NO_STORE } });
+  return NextResponse.json((await getPhotos()).map(publicMeta), { headers: { ...NO_STORE } });
 }
 
 export async function POST(req: Request) {
@@ -25,7 +32,7 @@ export async function POST(req: Request) {
     if (files.length > 10) throw new Error("upload at most 10 photos at once");
     const extra = { place: form.get("place") ?? undefined, person: form.get("person") ?? undefined };
     const saved = [];
-    for (const file of files) saved.push(await savePhoto(file, extra));
+    for (const file of files) saved.push(publicMeta(await savePhoto(file, extra)));
     return NextResponse.json(saved, { status: 201, headers: { ...NO_STORE } });
   } catch (err) {
     const message = err instanceof Error && err.message.includes("MB")

@@ -8,34 +8,25 @@
 
 import { NextResponse } from "next/server";
 import { guardJson, NO_STORE } from "@/app/api/private/_guard";
-import { deletePhoto, updatePhoto } from "@/lib/private-data";
-import { readBinary, photoPath } from "@/lib/store";
+import { deletePhoto, getPhotos, updatePhoto } from "@/lib/private-data";
+import { getPhoto } from "@/lib/store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-const MIME: Record<string, string> = {
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-  gif: "image/gif",
-};
-
 export async function GET(_req: Request, { params }: Ctx) {
   const denied = await guardJson();
   if (denied) return denied;
   const { id } = await params;
-  const file = photoPath(id);
-  if (!file) return NextResponse.json({ error: "Bad id." }, { status: 400 });
-  const buf = await readBinary(file);
-  if (!buf) return NextResponse.json({ error: "Not found." }, { status: 404 });
-  const ext = id.split(".").pop()!.toLowerCase();
-  return new NextResponse(new Uint8Array(buf), {
+  // metadata is the source of truth: it carries the server-only blob locator
+  const meta = (await getPhotos()).find((p) => p.id === id);
+  const got = await getPhoto(id, meta?.blobUrl);
+  if (!got) return NextResponse.json({ error: "Not found." }, { status: 404 });
+  return new NextResponse(new Uint8Array(got.buf), {
     headers: {
-      "Content-Type": MIME[ext] ?? "application/octet-stream",
+      "Content-Type": got.contentType,
       ...NO_STORE,
     },
   });

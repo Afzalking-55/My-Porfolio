@@ -5,9 +5,7 @@
  * ============================================================ */
 
 import { randomUUID } from "crypto";
-import path from "path";
-import { promises as fs } from "fs";
-import { readJSON, writeJSON, PHOTOS_DIR } from "@/lib/store";
+import { readJSON, writeJSON, putPhoto, removePhoto, extMime } from "@/lib/store";
 import type { JournalEntry, PrivateContent, PrivatePhoto, PrivatePlace, PrivatePerson } from "@/lib/types";
 import { privateSections } from "@/content/private";
 
@@ -135,11 +133,11 @@ export async function savePhoto(
   if (!sig) throw new Error("File content is not a valid JPG, PNG, WEBP or GIF image.");
   const ext = SIG_EXT[sig];
   const id = `${randomUUID()}.${ext}`;
-  await fs.mkdir(PHOTOS_DIR, { recursive: true });
-  await fs.writeFile(path.join(PHOTOS_DIR, id), buf);
+  const blobUrl = await putPhoto(id, buf, extMime(id));
   const photo: PrivatePhoto = {
     id,
     filename: id,
+    ...(blobUrl ? { blobUrl } : {}),
     originalName: file.name.slice(0, 120),
     caption: "",
     date: new Date().toISOString().slice(0, 10),
@@ -301,11 +299,9 @@ export async function deletePerson(id: string): Promise<boolean> {
 
 export async function deletePhoto(id: string): Promise<boolean> {
   const all = await readJSON<PrivatePhoto[]>("photos.json", []);
-  const next = all.filter((p) => p.id !== id);
-  if (next.length === all.length) return false;
-  await writeJSON("photos.json", next);
-  const { photoPath } = await import("@/lib/store");
-  const file = photoPath(id);
-  if (file) await fs.rm(file, { force: true });
+  const target = all.find((p) => p.id === id);
+  if (!target) return false;
+  await writeJSON("photos.json", all.filter((p) => p.id !== id));
+  await removePhoto(id, target.blobUrl);
   return true;
 }

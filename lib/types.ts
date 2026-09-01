@@ -74,6 +74,8 @@ export interface JournalEntry {
 export interface PrivatePhoto {
   id: string;
   filename: string;
+  /** locator inside the PRIVATE blob store — server-only; stripped from every API response */
+  blobUrl?: string;
   originalName: string;
   caption: string;
   date: string;

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 import { contact, socials } from "@/content/contact";
-import { isRealUrl } from "@/lib/placeholder";
+import { isRealUrl, isRealEmail } from "@/lib/placeholder";
 import {
   ArrowRight, GithubIcon, InstagramIcon, LinkedinIcon, LockIcon, MailIcon, XIcon,
 } from "@/components/Icons";
@@ -35,7 +35,7 @@ function SocialIcons() {
       {real(socials.x) && (
         <a className="icon-btn" href={socials.x!} target="_blank" rel="noopener noreferrer" aria-label="X"><XIcon /></a>
       )}
-      {real(contact.email) && (
+      {isRealEmail(contact.email) && (
         <a className="icon-btn" href={`mailto:${contact.email}`} aria-label="Email"><MailIcon /></a>
       )}
     </nav>

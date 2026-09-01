@@ -110,15 +110,31 @@ const optText = (v: unknown, max: number): string | undefined =>
 const linkId = (v: unknown): string | undefined =>
   typeof v === "string" && ID_SAFE.test(v) ? v : undefined;
 
+/* Real content check: client-declared MIME is untrusted — the bytes are
+ * the authority. Accepts exactly what the gallery documents. */
+function imageSignature(buf: Buffer): "png" | "jpeg" | "gif" | "webp" | null {
+  if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47 &&
+      buf[4] === 0x0d && buf[5] === 0x0a && buf[6] === 0x1a && buf[7] === 0x0a) return "png";
+  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "jpeg";
+  if (buf.length >= 4 && buf.subarray(0, 4).toString("latin1") === "GIF8") return "gif";
+  if (buf.length >= 12 && buf.subarray(0, 4).toString("latin1") === "RIFF" &&
+      buf.subarray(8, 12).toString("latin1") === "WEBP") return "webp";
+  return null;
+}
+
+const SIG_EXT: Record<string, string> = { png: "png", jpeg: "jpg", gif: "gif", webp: "webp" };
+
 export async function savePhoto(
   file: File,
   extra?: { place?: unknown; person?: unknown }
 ): Promise<PrivatePhoto> {
-  const ext = MIME_EXT[file.type];
-  if (!ext) throw new Error("Only JPG, PNG, WEBP or GIF images are accepted.");
+  if (!MIME_EXT[file.type]) throw new Error("Only JPG, PNG, WEBP or GIF images are accepted.");
   if (file.size > MAX_PHOTO_BYTES) throw new Error("Image is larger than 8 MB.");
-  const id = `${randomUUID()}.${ext}`;
   const buf = Buffer.from(await file.arrayBuffer());
+  const sig = imageSignature(buf);
+  if (!sig) throw new Error("File content is not a valid JPG, PNG, WEBP or GIF image.");
+  const ext = SIG_EXT[sig];
+  const id = `${randomUUID()}.${ext}`;
   await fs.mkdir(PHOTOS_DIR, { recursive: true });
   await fs.writeFile(path.join(PHOTOS_DIR, id), buf);
   const photo: PrivatePhoto = {

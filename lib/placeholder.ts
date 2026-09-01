@@ -18,6 +18,12 @@ export function isRealUrl(value: unknown): value is string {
   return /^https?:\/\/[^\s]+$/.test(value.trim());
 }
 
+/** True only for well-formed email addresses (isRealUrl rejects these). */
+export function isRealEmail(value: unknown): value is string {
+  if (typeof value !== "string") return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim());
+}
+
 /** Split a string of "words" into tokens for search — tiny util. */
 export function normalize(text: string): string {
   return text.toLowerCase().trim();

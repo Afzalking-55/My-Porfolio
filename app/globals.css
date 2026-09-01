@@ -38,6 +38,7 @@ body {
   font-size: 16px;
   line-height: 1.65;
   letter-spacing: 0.01em;
+  overflow-wrap: break-word; /* long filenames/emails never break the layout */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -526,14 +527,16 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .lightbox .lb-close { position: fixed; top: 18px; right: 18px; }
 
 /* modal (edit caption etc.) */
-.modal { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: var(--pad-x); background: rgba(5, 5, 6, 0.8); backdrop-filter: blur(6px); animation: fadein 0.2s both; }
-.modal-box { width: 100%; max-width: 480px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 14px; animation: rise 0.35s var(--ease) both; }
+/* scrollable flex centering: tall modals (small phones, short windows)
+ * can scroll instead of clipping their top/bottom */
+.modal { position: fixed; inset: 0; z-index: 95; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: var(--pad-x); background: rgba(5, 5, 6, 0.8); backdrop-filter: blur(6px); animation: fadein 0.2s both; }
+.modal-box { margin: auto; width: 100%; max-width: 480px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 16px; padding: 26px; display: flex; flex-direction: column; gap: 14px; animation: rise 0.35s var(--ease) both; }
 .modal-box h3 { font-size: 22px; }
 .modal-box label { font-family: var(--font-mono), monospace; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
 .modal-box input[type="text"], .modal-box input[type="date"], .modal-box textarea { width: 100%; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 10px; padding: 12px 14px; color: var(--ink); }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 6px; }
 
-.p-mobile-nav { display: none; gap: 8px; margin-top: 12px; }
+.p-mobile-nav { display: none; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
 @media (max-width: 1080px) {
   .p-mobile-nav { display: flex; }
   .p-mobile-nav a {

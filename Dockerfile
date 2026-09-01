@@ -9,6 +9,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# Enables output:"standalone" in next.config.ts — the runtime stage
+# copies .next/standalone, so this MUST be set for the build to succeed.
+ENV BUILD_MODE=docker
 RUN npm run build
 
 # ---- runtime ----

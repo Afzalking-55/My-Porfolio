@@ -2,7 +2,7 @@ import Link from "next/link";
 import { profile } from "@/content/profile";
 import { contact, socials } from "@/content/contact";
 import { site } from "@/content/meta";
-import { isRealUrl } from "@/lib/placeholder";
+import { isRealUrl, isRealEmail } from "@/lib/placeholder";
 import { GithubIcon, InstagramIcon, LinkedinIcon, LockIcon, MailIcon, XIcon } from "@/components/Icons";
 
 export function Footer() {
@@ -18,7 +18,7 @@ export function Footer() {
           </div>
 
           <div className="footer-links" aria-label="Footer">
-            {real(contact.email) ? (
+            {isRealEmail(contact.email) ? (
               <a className="ulink" href={`mailto:${contact.email}`}>{contact.email}</a>
             ) : (
               <span className="ph">[email not set — edit content/contact.ts]</span>
@@ -35,7 +35,7 @@ export function Footer() {
               {real(socials.github) && <a className="icon-btn" href={socials.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><GithubIcon /></a>}
               {real(socials.linkedin) && <a className="icon-btn" href={socials.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><LinkedinIcon /></a>}
               {real(socials.x) && <a className="icon-btn" href={socials.x} target="_blank" rel="noopener noreferrer" aria-label="X"><XIcon /></a>}
-              {real(contact.email) && <a className="icon-btn" href={`mailto:${contact.email}`} aria-label="Email"><MailIcon /></a>}
+              {isRealEmail(contact.email) && <a className="icon-btn" href={`mailto:${contact.email}`} aria-label="Email"><MailIcon /></a>}
             </div>
           </div>
         </div>

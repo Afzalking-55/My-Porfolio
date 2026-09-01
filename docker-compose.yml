@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PRIVATE_AREA_PASSWORD: ${PRIVATE_AREA_PASSWORD:?set in .env}
+      SESSION_SECRET: ${SESSION_SECRET:?set in .env}
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
+    volumes:
+      - ./data:/app/data   # persist journal + photos on the host
+    restart: unless-stopped

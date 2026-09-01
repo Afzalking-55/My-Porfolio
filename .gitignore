@@ -1,0 +1,35 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+next-env.d.ts
+
+# production
+/build
+
+# env files — NEVER commit real secrets
+.env
+.env.local
+.env*.local
+
+# private runtime data (journal entries, uploaded photos, saved edits)
+# keep the folder structure, ignore the contents
+/data/private/*
+!/data/private/.gitkeep
+!/data/private/README.md
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# typescript
+*.tsbuildinfo
+
+# editor
+.idea/
+.vscode/

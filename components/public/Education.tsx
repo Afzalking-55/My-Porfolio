@@ -10,7 +10,7 @@ export function Education() {
         <SectionHead
           index="05"
           title={<>Where the <span className="serif-it">foundations</span> were laid.</>}
-          lede="Formal or self-directed — whichever is true."
+          lede="Formal schooling, exactly as it happened."
         />
 
         <div className="grid-2">

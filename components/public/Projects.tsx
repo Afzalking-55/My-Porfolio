@@ -90,7 +90,7 @@ export function Projects() {
         <SectionHead
           index="03"
           title={<>Selected <span className="serif-it">work</span>.</>}
-          lede="Real projects only — as you build them, add a block to content/projects.ts. This grid, the filters and the buttons update themselves."
+          lede="A short, honest list — only projects that actually happened, described as they are."
         />
 
         <div className="filters" role="group" aria-label="Filter projects by category">
@@ -113,11 +113,17 @@ export function Projects() {
 
         <div className="projects-grid">
           {visible.length === 0 ? (
-            <div className="proj-empty">No projects in this category yet — add one in content/projects.ts</div>
+            <div className="proj-empty">Nothing in this category yet — more coming soon.</div>
           ) : (
             visible.map((p) => <ProjectCard key={p.slug} p={p} />)
           )}
         </div>
+
+        {filter === "ALL" && (
+          <p className="projects-coming">
+            <span className="serif-it">More projects coming soon.</span>
+          </p>
+        )}
       </div>
     </section>
   );

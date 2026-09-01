@@ -329,6 +329,7 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .project .prow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); }
 .project .plinks { display: flex; gap: 10px; }
 .proj-empty { grid-column: 1 / -1; text-align: center; color: var(--faint); padding: 60px 0; font-family: var(--font-mono), monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+.projects-coming { text-align: center; margin-top: 28px; color: var(--faint); font-size: 15px; }
 
 /* ---------- experience timeline ---------- */
 .timeline { position: relative; margin-left: 6px; }

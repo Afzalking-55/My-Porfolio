@@ -4,7 +4,7 @@
  * and the comparison happens only in this process. */
 
 import { NextResponse } from "next/server";
-import { checkPassword, createSessionToken, buildSessionCookie, privateAreaConfigured } from "@/lib/auth";
+import { checkPassword, createSessionToken, buildSessionCookie, privateAreaConfigured, sessionSecretConfigured } from "@/lib/auth";
 import { clientKey, registerFailedAttempt, tooManyAttempts, clearAttempts } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -14,6 +14,13 @@ export async function POST(req: Request) {
   if (!privateAreaConfigured()) {
     return NextResponse.json(
       { error: "The private area is not configured yet. Set PRIVATE_AREA_PASSWORD in the server environment." },
+      { status: 503 }
+    );
+  }
+  if (!sessionSecretConfigured()) {
+    // Without this, a missing SESSION_SECRET would surface as a raw 500.
+    return NextResponse.json(
+      { error: "Sessions are not configured yet. Set SESSION_SECRET (at least 32 characters) in the server environment." },
       { status: 503 }
     );
   }

@@ -20,6 +20,13 @@ export function privateAreaConfigured(): boolean {
   return Boolean(process.env.PRIVATE_AREA_PASSWORD?.trim());
 }
 
+/** True when sessions can actually be signed (mirrors getSessionSecret's rules). */
+export function sessionSecretConfigured(): boolean {
+  const s = process.env.SESSION_SECRET?.trim();
+  if (s && s.length >= 32) return true;
+  return process.env.NODE_ENV !== "production"; // dev fallback exists
+}
+
 /**
  * Timing-safe password check. Both sides are SHA-256 hashed first so the
  * comparison length never leaks the password's length.

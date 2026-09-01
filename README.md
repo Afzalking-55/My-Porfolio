@@ -147,9 +147,10 @@ login: Save writes to `data/private/content.json`, which is git-ignored.
 
 ## 6. Deploying for real
 
-**Requirements:** a Node runtime (18+ / 22 recommended) that can read & write
-the `/data` folder — journal + photos are file-backed. (Static-only hosts like
-pure GitHub Pages can't serve the private area; see §8 for the database path.)
+**Requirements:** a Node runtime (18+ / 22 recommended). The private area's
+persistence adapts automatically: on Vercel it uses **Vercel KV** (JSON docs) +
+**Vercel Blob** (photos) when those stores are connected; anywhere else it uses
+the `/data` folder on disk (so it must be readable & writable).
 
 ### Option A — Docker (VPS, Railway, Render, Fly…)
 ```bash
@@ -167,11 +168,21 @@ PORT=3000 npm start
 # reverse proxy (Caddy is the lazy choice: `reverse_proxy localhost:3000` → auto-HTTPS)
 ```
 
-### Option C — Vercel
-Deploy → set the three env vars. Works, but **journal/photos need writable
-disk**, so either attach storage (Vercel Blob + Neon/Supabase via the
-`lib/store.ts` swap in §8) or accept that runtime data won't persist on
-serverless. For your use case, A or B is the honest recommendation.
+### Option C — Vercel (simplest)
+1. Import the repo (Next.js is auto-detected) and deploy.
+2. Marketplace → install **Vercel KV** and **Vercel Blob**, apply both to
+   Production. Their env vars (`KV_REST_API_URL`, `KV_REST_API_TOKEN`,
+   `BLOB_READ_WRITE_TOKEN`) are injected automatically — the app switches to
+   them at boot. Until they exist, Vercel writes are refused with a clear
+   error instead of silently vanishing.
+3. Env vars: `PRIVATE_AREA_PASSWORD`, `SESSION_SECRET` (≥32 chars),
+   `SITE_URL` (full `https://…` URL or unset — blank values are ignored).
+4. Settings → Functions → Maximum Request Body Size = 5 MB (platform cap);
+   keep photos under it.
+5. Smoke-test it: `BASE_URL=https://… PASSWORD=… scripts/smoke-test.sh`.
+
+Photos live in a **private** Blob store: their URLs 401 at the CDN, bytes are
+only streamed through the auth-checked `/api/private/photos/[id]` route.
 
 ### Custom domain
 Point an A/CNAME record at your host (or add it in Vercel/Railway/Render),
@@ -212,12 +223,13 @@ focus-visible outlines included.
 
 ## 8. Connect a real database later
 
-`lib/store.ts` (+ `lib/private-data.ts`) is the only layer that touches disk:
-`readJSON / writeJSON / photoPath`. Replace those functions with Postgres /
-Supabase / MongoDB calls and everything else — APIs, journal, photos,
-private content — keeps working unchanged. Auth can similarly move to an
-auth provider by swapping `lib/auth.ts` session issuance for provider
-sessions; routes and middleware keep their shape.
+`lib/store.ts` (+ `lib/private-data.ts`) is the only layer that touches
+storage: `readJSON / writeJSON / putPhoto / getPhoto / removePhoto`. It already
+implements two backends (Vercel KV + Blob, local files); adding Postgres /
+Supabase / MongoDB means adding one more branch there and nothing else — APIs,
+journal, photos, private content — keeps working unchanged. Auth can
+similarly move to an auth provider by swapping `lib/auth.ts` session issuance
+for provider sessions; routes and middleware keep their shape.
 
 ---
 

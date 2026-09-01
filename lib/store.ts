@@ -45,18 +45,38 @@ async function ensureDirs() {
   await fs.mkdir(PHOTOS_DIR, { recursive: true });
 }
 
+/* On Vercel the filesystem is READ-ONLY and EPHEMERAL: if someone deploys
+ * there without connecting the stores, a file-mode write would fail with
+ * cryptic EROFS errors (or "succeed" and silently vanish on the next cold
+ * start). That is a data-loss trap — fail loudly, with the fix, instead.
+ * Everywhere else (Docker, VPS, dev) file mode is the real backend, so this
+ * is a no-op. */
+function requirePersistentStorage(what: string, fix: string): void {
+  if (process.env.VERCEL === "1") {
+    const msg = `Cannot save ${what}: Vercel's filesystem is read-only/ephemeral. ${fix}`;
+    console.error("[storage]", msg);
+    throw new Error(msg);
+  }
+}
+
 /* ---------- JSON documents ---------- */
 
 export async function readJSON<T>(file: string, fallback: T): Promise<T> {
   if (KV_MODE) {
     const { kv } = await import("@vercel/kv");
-    const raw = await kv.get<string>(KEY_NS + file);
-    if (typeof raw !== "string") return fallback;
-    try {
-      return JSON.parse(raw) as T;
-    } catch {
-      return fallback;
+    // @upstash/redis deserializes JSON-looking values automatically, so a
+    // document written with JSON.stringify comes back as a real object.
+    // Accept both shapes (object, or raw string if a client disables it).
+    const raw = await kv.get<unknown>(KEY_NS + file);
+    if (raw === null || raw === undefined) return fallback;
+    if (typeof raw === "string") {
+      try {
+        return JSON.parse(raw) as T;
+      } catch {
+        return fallback;
+      }
     }
+    return raw as T;
   }
   await ensureDirs();
   try {
@@ -74,6 +94,10 @@ export async function writeJSON(file: string, value: unknown): Promise<void> {
     await kv.set(KEY_NS + file, JSON.stringify(value));
     return;
   }
+  requirePersistentStorage(
+    "private data",
+    "connect a Vercel KV store via the Marketplace, then redeploy"
+  );
   await ensureDirs();
   const target = path.join(DATA_DIR, file);
   const tmp = `${target}.${Date.now()}.tmp`;
@@ -96,12 +120,17 @@ export async function putPhoto(id: string, buf: Buffer, contentType: string): Pr
     });
     return res.url;
   }
+  requirePersistentStorage(
+    "photos",
+    "connect a Vercel Blob store via the Marketplace, then redeploy"
+  );
   await ensureDirs();
   await fs.writeFile(path.join(PHOTOS_DIR, id), buf);
   return null;
 }
 
 /** Read bytes for an authenticated response. */
+
 export async function getPhoto(
   id: string,
   blobUrl?: string

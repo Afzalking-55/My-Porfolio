@@ -13,6 +13,7 @@ export const site = {
   /**
    * Section order for the public page (labels are generated from
    * component headings — edit this only if you want to reorder).
+   * NOTE: per owner decision, there is no public Goals/Vision section.
    */
   sections: [
     "home",
@@ -21,8 +22,7 @@ export const site = {
     "projects",
     "experience",
     "education",
-    "building",
-    "vision",
+    "learning",
     "contact",
   ],
 } as const;

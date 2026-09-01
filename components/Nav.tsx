@@ -16,7 +16,6 @@ export const NAV_ITEMS = [
   ["Projects", "#projects"],
   ["Experience", "#experience"],
   ["Education", "#education"],
-  ["Vision", "#vision"],
   ["Contact", "#contact"],
 ] as const;
 

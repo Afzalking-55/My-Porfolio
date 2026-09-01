@@ -1,36 +1,41 @@
 import type { BuildingItem } from "@/lib/types";
 
 /* ============================================================
- * CURRENTLY BUILDING
- * ------------------------------------------------------------
- * A live list of what's on your desk right now. Update freely;
- * delete items when they move into /content/projects.ts.
- * status: "IDEATING" | "BUILDING" | "LEARNING" | "SHIPPING"
+ * CURRENTLY LEARNING — §8 (formerly "Currently Building").
+ * Learning areas only — these are NOT claims of expertise.
+ * No proficiency levels exist in this data model.
+ * category/status labels are descriptors, not achievements.
  * ============================================================ */
 
 export const currentlyBuilding: BuildingItem[] = [
   {
-    title: "[AI automation system you're assembling]",
-    category: "AI AUTOMATION",
-    status: "BUILDING",
-    note: "[One honest sentence about where it stands today.]",
-  },
-  {
-    title: "[Website or app you're developing]",
-    category: "WEB",
-    status: "BUILDING",
-    note: "[What it will do, who it's for.]",
-  },
-  {
-    title: "[Business idea you're validating]",
-    category: "BUSINESS",
-    status: "IDEATING",
-    note: "[The problem you're testing.]",
-  },
-  {
-    title: "[Topic you're studying right now]",
-    category: "LEARNING",
+    title: "Studying 12th Standard",
+    category: "EDUCATION",
     status: "LEARNING",
-    note: "[Course, skill or subject — and why.]",
+    note: "Currently completing my 12th-standard studies.",
+  },
+  {
+    title: "Management",
+    category: "MANAGEMENT",
+    status: "LEARNING",
+    note: "Learning about managing people, work, and responsibilities.",
+  },
+  {
+    title: "Sales",
+    category: "SALES",
+    status: "LEARNING",
+    note: "Learning sales and how to communicate with potential clients and customers.",
+  },
+  {
+    title: "Money & Finance",
+    category: "FINANCE",
+    status: "LEARNING",
+    note: "Learning about money, financial understanding, and how to manage it responsibly.",
+  },
+  {
+    title: "Personal Skills",
+    category: "PERSONAL",
+    status: "LEARNING",
+    note: "Developing useful skills through continuous learning and practical experience.",
   },
 ];

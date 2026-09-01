@@ -7,7 +7,6 @@ import { Projects } from "@/components/public/Projects";
 import { Experience } from "@/components/public/Experience";
 import { Education } from "@/components/public/Education";
 import { Building } from "@/components/public/Building";
-import { Vision } from "@/components/public/Vision";
 import { Contact } from "@/components/public/Contact";
 import { PrivateTeaser } from "@/components/public/PrivateTeaser";
 
@@ -23,7 +22,6 @@ export default function HomePage() {
         <Experience />
         <Education />
         <Building />
-        <Vision />
         <Contact />
         <PrivateTeaser />
       </main>

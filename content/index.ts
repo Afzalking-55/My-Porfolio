@@ -19,6 +19,5 @@ export { projects } from "./projects";
 export { experience } from "./experience";
 export { education } from "./education";
 export { currentlyBuilding } from "./building";
-export { goalGroups } from "./goals";
 export { privateSections } from "./private";
 export { site } from "./meta";

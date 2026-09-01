@@ -370,13 +370,7 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .status-dot.live::before { animation: pulse 2s infinite; }
 @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(213, 196, 156, 0.5); } 50% { box-shadow: 0 0 0 5px rgba(213, 196, 156, 0); } }
 
-/* ---------- goals ---------- */
-.goals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.goal-card h3 { font-size: 22px; margin-bottom: 2px; }
-.goal-card .horizon { font-family: var(--font-mono), monospace; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); margin-bottom: 20px; display: block; }
-.goal-card ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
-.goal-card li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; color: var(--dim); font-size: 14.5px; align-items: baseline; }
-.goal-card li .num { font-family: var(--font-mono), monospace; font-size: 10px; color: var(--accent); }
+/* goals/vision section removed by owner decision — no public ambitions */
 
 /* ---------- contact ---------- */
 .contact-rows { border-top: 1px solid var(--line); }
@@ -572,7 +566,6 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
   .hero-body { grid-template-columns: 1fr; }
   .portrait { max-width: 340px; }
   .projects-grid { grid-template-columns: repeat(2, 1fr); }
-  .goals-grid { grid-template-columns: 1fr; }
   .journal-layout { grid-template-columns: 1fr; }
   .p-nav { display: none; }
 }

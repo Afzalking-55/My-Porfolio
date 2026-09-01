@@ -29,7 +29,7 @@ export const projects: Project[] = [
       "and handling the client side of the project.",
     tech: ["Facebook groups"],
     status: "SHIPPED",
-    date: "10th-standard holidays · [year to be added]",
+    date: "September 2025 – October 2025",
     categories: ["BUSINESS"],
     image: null,
     liveUrl: null,

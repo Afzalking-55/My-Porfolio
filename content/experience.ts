@@ -8,7 +8,7 @@ import type { TimelineEntry } from "@/lib/types";
 
 export const experience: TimelineEntry[] = [
   {
-    period: "10th-standard holidays · [year to be added]",
+    period: "September 2025 – October 2025",
     title: "Zlance — agency project",
     org: "Self-started",
     kind: "BUSINESS",

@@ -7,6 +7,7 @@
 import { useState } from "react";
 import type { PrivateContent } from "@/lib/types";
 import { PencilIcon, XCloseIcon, CheckIcon } from "@/components/private/icons";
+import { extractDob, ageFromIso } from "@/lib/age";
 
 interface SectionDef { key: string; title: string; prompt: string }
 
@@ -71,9 +72,20 @@ function SectionCard({
           </div>
         </>
       ) : (
-        <p className={`p-text ${isPlaceholder ? "faint" : ""}`} style={isPlaceholder ? { border: "1px dashed rgba(213,196,156,0.35)", borderRadius: 10, padding: 16 } : undefined}>
-          {value || "—"}
-        </p>
+        <>
+          <p className={`p-text ${isPlaceholder ? "faint" : ""}`} style={isPlaceholder ? { border: "1px dashed rgba(213,196,156,0.35)", borderRadius: 10, padding: 16 } : undefined}>
+            {value || "—"}
+          </p>
+          {section.key === "personal-details" && (() => {
+            const dob = extractDob(value);
+            const age = dob ? ageFromIso(dob) : null;
+            return age !== null ? (
+              <p className="p-text faint" style={{ marginTop: 10, fontFamily: "var(--font-mono), monospace", fontSize: 12, letterSpacing: "0.08em" }}>
+                Age: {age} · computed from DOB ({dob}), never stored
+              </p>
+            ) : null;
+          })()}
+        </>
       )}
     </article>
   );

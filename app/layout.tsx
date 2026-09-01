@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { profile } from "@/content/profile";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 /* Fonts are self-hosted (next/font/local + @fontsource) — no Google
@@ -36,7 +37,7 @@ const mono = localFont({
   ],
 });
 
-const siteUrl = process.env.SITE_URL ?? "http://localhost:3000";
+const base = getSiteUrl();
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -47,7 +48,7 @@ export const viewport: Viewport = {
 export async function generateMetadata(): Promise<Metadata> {
   const title = `${profile.name} — ${profile.tagline}`;
   return {
-    metadataBase: new URL(siteUrl),
+    metadataBase: new URL(base),
     title: { default: title, template: `%s · ${profile.name}` },
     description: profile.summary,
     keywords: ["portfolio", "AI", "automation", "web development", "entrepreneurship"],
@@ -56,7 +57,7 @@ export async function generateMetadata(): Promise<Metadata> {
       type: "website",
       title,
       description: profile.summary,
-      url: siteUrl,
+      url: base,
       siteName: profile.name,
     },
     twitter: { card: "summary_large_image", title, description: profile.summary },

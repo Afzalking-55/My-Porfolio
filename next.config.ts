@@ -9,11 +9,6 @@ const nextConfig: NextConfig = {
   // Private photo files are NEVER served as static assets — they are only
   // readable through the authenticated route handler in
   // app/api/private/photos/[id]/route.ts. Do not move data/ into public/.
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb",
-    },
-  },
 };
 
 export default nextConfig;

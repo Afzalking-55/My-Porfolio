@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/content/profile";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const alt = "Portfolio";
 export const size = { width: 1200, height: 630 };
@@ -35,7 +36,7 @@ export default function OpengraphImage() {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 17, color: "#a5a3ab" }}>
           <span>AI · Automation · Web · Business</span>
-          <span style={{ color: "#6d6c74" }}>{(process.env.SITE_URL ?? "localhost:3000").replace(/^https?:\/\//, "")}</span>
+          <span style={{ color: "#6d6c74" }}>{getSiteUrl().replace(/^https?:\/\//, "")}</span>
         </div>
       </div>
     ),

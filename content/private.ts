@@ -87,4 +87,10 @@ export const privateSections: PrivateSectionDef[] = [
     prompt:
       "[Your timeline so far, in your own words — the moments that actually shaped the path. Add one line per chapter: date → what happened → what it meant.]",
   },
+  {
+    key: "contacts",
+    title: "Private Contacts",
+    prompt:
+      "[Phone numbers and personal accounts that must never appear on the public site. The public contact section links here for this.]",
+  },
 ];

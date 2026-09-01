@@ -1,32 +1,35 @@
 /* ============================================================
  * CONTACT & SOCIALS
  * ------------------------------------------------------------
- * Fill in ONLY what you actually have. A value left as null or
- * still in [brackets] is hidden from visitors automatically —
+ * §2 personalization applied (public values from Mohamed Afzal).
+ * A value left as null is hidden from visitors automatically —
  * nothing fake is ever rendered or linked.
+ *
+ * NOTE: the phone number is deliberately NOT stored here.
+ * Phone and other private details live in the authenticated
+ * Private Me area (stored server-side, git-ignored).
  * ============================================================ */
 
 export const contact = {
-  /** e.g. "hello@gmail.com" — used as a mailto: link */
-  email: null as string | null, // "[MY GMAIL WILL BE ADDED HERE]"
+  /** used as a mailto: link */
+  email: "mohdafzal0429@gmail.com",
 
-  /** digits only, e.g. "+15551234567" — used as a tel: link */
-  phone: null as string | null, // "[MY PHONE NUMBER WILL BE ADDED HERE]"
+  /** phone intentionally omitted from the public site */
+  phone: null as string | null,
 
-  location: null as string | null, // e.g. "Lagos, Nigeria"
+  location: null as string | null,
 
-  /** shown under the contact rows while values are still missing */
-  note: "Contact details are being finalised — this section updates the moment they are added in content/contact.ts.",
+  /** optional line under the contact rows; null → not rendered */
+  note: null as string | null,
 };
 
 /**
  * Instagram / GitHub / LinkedIn / Email icons appear in the header
  * and footer ONLY when the URL below is a real link.
- * Set the rest when you have them. Never put fake URLs here.
  */
 export const socials = {
-  instagram: null as string | null, // e.g. "https://instagram.com/yourhandle"
-  github: null as string | null, //   e.g. "https://github.com/yourhandle"
-  linkedin: null as string | null, // e.g. "https://linkedin.com/in/yourhandle"
-  x: null as string | null, //        e.g. "https://x.com/yourhandle"
+  instagram: "https://instagram.com/afzal5",
+  github: "https://github.com/Afzalking-55", // GitHub profile connected to this project
+  linkedin: null as string | null, // [placeholder — account to be added when/if it exists]
+  x: null as string | null,
 };

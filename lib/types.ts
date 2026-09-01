@@ -79,6 +79,25 @@ export interface PrivatePhoto {
   date: string;
   size: number;
   addedAt: string;
+  location?: string;
+  description?: string;
+  /** optional links into Places / People records */
+  place?: string;
+  person?: string;
+}
+
+export interface PrivatePlace {
+  id: string;
+  name: string;
+  date: string; // optional, "YYYY-MM-DD" or ""
+  memory: string; // optional
+}
+
+export interface PrivatePerson {
+  id: string;
+  name: string;
+  description: string; // optional
+  memory: string; // optional
 }
 
 /** editable text of "The Real Me" — merged over content/private.ts defaults */

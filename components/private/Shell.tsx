@@ -7,8 +7,10 @@ import { LogoutIcon } from "@/components/Icons";
 
 const LINKS = [
   ["Dashboard", "/private"],
+  ["Places", "/private/places"],
+  ["People", "/private/people"],
+  ["Memories", "/private/photos"],
   ["Journal", "/private/journal"],
-  ["Photos", "/private/photos"],
 ] as const;
 
 export function PrivateShell({ children }: { children: React.ReactNode }) {

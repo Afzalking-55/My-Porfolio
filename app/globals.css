@@ -559,6 +559,16 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .err-panel h2 { font-size: 26px; margin-bottom: 8px; }
 .err-panel p { color: var(--dim); font-size: 14px; margin-bottom: 20px; }
 
+/* ---------- private collections (places / people) ---------- */
+.collection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 26px; }
+@media (max-width: 900px) { .collection-grid { grid-template-columns: 1fr; } }
+.photo-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding-top: 8px; border-top: 1px solid var(--line); }
+.photo-strip img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); cursor: zoom-in; transition: border-color .25s, transform .3s var(--ease); }
+.photo-strip img:hover { border-color: var(--accent); transform: translateY(-2px); }
+.strip-add { width: 64px; height: 64px; border-radius: 8px; border: 1.5px dashed var(--line-strong); display: grid; place-items: center; color: var(--faint); transition: color .25s, border-color .25s; }
+.strip-add:hover { color: var(--accent); border-color: var(--accent); }
+.modal-box textarea { min-height: 90px; line-height: 1.7; }
+
 /* ---------- responsive ---------- */
 @media (max-width: 1080px) {
   .nav-links { display: none; }

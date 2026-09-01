@@ -71,13 +71,13 @@ export function Gallery() {
     }
   }
 
-  async function saveMeta(photo: PrivatePhoto, caption: string, date: string) {
+  async function saveMeta(photo: PrivatePhoto, meta: { caption: string; date: string; location: string; description: string }) {
     setBusy(true);
     try {
       const res = await fetch(`/api/private/photos/${photo.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ caption, date }),
+        body: JSON.stringify(meta),
       });
       if (res.ok) { setEditing(null); await load(); }
       else setError("Could not save caption/date.");
@@ -103,13 +103,14 @@ export function Gallery() {
   return (
     <>
       <div className="p-hero">
-        <span className="eyebrow">Private photos · stored server-side · auth-gated delivery</span>
+        <span className="eyebrow">Memories · private gallery · stored server-side · auth-gated delivery</span>
         <h1 style={{ fontSize: "clamp(34px, 5.5vw, 58px)", marginTop: 10 }}>
-          Personal <span className="serif-it">photos</span>
+          <span className="serif-it">Memories</span> — personal photos
         </h1>
         <p className="p-sub">
-          These images are never uploaded to the public site, never indexed, and only stream to
-          this authenticated session. JPG / PNG / WEBP / GIF · max 8 MB each.
+          Captions, dates, places, descriptions — whatever you want to attach to a moment.
+          These images never touch the public site and only stream to this authenticated
+          session. JPG / PNG / WEBP / GIF · max 8 MB each.
         </p>
       </div>
 
@@ -160,7 +161,7 @@ export function Gallery() {
                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.opacity = "0.25"; }} />
               <figcaption className="pc-meta">
                 <span>{p.caption || "—"}</span>
-                <span className="pc-date">{p.date}</span>
+                <span className="pc-date">{[p.date, p.location].filter(Boolean).join(" · ")}</span>
               </figcaption>
               <div className="pc-tools">
                 <button className="mini-btn" aria-label="Edit caption"
@@ -195,7 +196,10 @@ export function Gallery() {
             <img src={`/api/private/photos/${current.id}`} alt={current.caption || current.originalName} />
             <figcaption>
               {current.caption || current.originalName}
-              <span className="lb-date">{current.date} · {viewer! + 1} / {photos.length}</span>
+              {current.description && (
+                <span style={{ display: "block", marginTop: 6, whiteSpace: "pre-wrap", fontSize: 13.5 }}>{current.description}</span>
+              )}
+              <span className="lb-date">{[current.date, current.location].filter(Boolean).join(" · ")} · {viewer! + 1} / {photos.length}</span>
             </figcaption>
           </figure>
           {photos.length > 1 && (
@@ -221,10 +225,12 @@ function ModalEdit({
   photo: PrivatePhoto;
   busy: boolean;
   onCancel: () => void;
-  onSave: (p: PrivatePhoto, caption: string, date: string) => void;
+  onSave: (p: PrivatePhoto, meta: { caption: string; date: string; location: string; description: string }) => Promise<void>;
 }) {
   const [caption, setCaption] = useState(photo.caption);
   const [date, setDate] = useState(photo.date);
+  const [location, setLocation] = useState(photo.location ?? "");
+  const [description, setDescription] = useState(photo.description ?? "");
   return (
     <div className="modal" role="dialog" aria-modal="true" aria-label="Edit photo" onClick={onCancel}>
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
@@ -233,9 +239,14 @@ function ModalEdit({
         <input id="cap" type="text" value={caption} onChange={(e) => setCaption(e.target.value)} maxLength={500} />
         <label htmlFor="dt" style={{ marginTop: 6 }}>Date</label>
         <input id="dt" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        <label htmlFor="loc" style={{ marginTop: 6 }}>Location (optional)</label>
+        <input id="loc" type="text" value={location} onChange={(e) => setLocation(e.target.value)} maxLength={200} placeholder="Where was this?" />
+        <label htmlFor="desc" style={{ marginTop: 6 }}>Description (optional)</label>
+        <textarea id="desc" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} maxLength={4000}
+                  placeholder="What's the story behind this photo?" style={{ resize: "vertical" }} />
         <div className="modal-actions">
           <button className="btn btn-ghost btn-sm" onClick={onCancel}><XCloseIcon size={13} /> Cancel</button>
-          <button className="btn btn-primary btn-sm" onClick={() => onSave(photo, caption, date)} disabled={busy}>
+          <button className="btn btn-primary btn-sm" onClick={() => onSave(photo, { caption, date, location, description })} disabled={busy}>
             {busy ? <span className="spinner" /> : <><CheckIcon size={13} /> Save</>}
           </button>
         </div>

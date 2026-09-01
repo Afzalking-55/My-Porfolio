@@ -23,8 +23,9 @@ export async function POST(req: Request) {
     const files = form.getAll("photos").filter((f): f is File => f instanceof File);
     if (files.length === 0) throw new Error("no files");
     if (files.length > 10) throw new Error("upload at most 10 photos at once");
+    const extra = { place: form.get("place") ?? undefined, person: form.get("person") ?? undefined };
     const saved = [];
-    for (const file of files) saved.push(await savePhoto(file));
+    for (const file of files) saved.push(await savePhoto(file, extra));
     return NextResponse.json(saved, { status: 201, headers: { ...NO_STORE } });
   } catch (err) {
     const message = err instanceof Error && err.message.includes("MB")

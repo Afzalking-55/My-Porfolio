@@ -8,7 +8,7 @@ import { randomUUID } from "crypto";
 import path from "path";
 import { promises as fs } from "fs";
 import { readJSON, writeJSON, PHOTOS_DIR } from "@/lib/store";
-import type { JournalEntry, PrivateContent, PrivatePhoto } from "@/lib/types";
+import type { JournalEntry, PrivateContent, PrivatePhoto, PrivatePlace, PrivatePerson } from "@/lib/types";
 import { privateSections } from "@/content/private";
 
 /* ---------------- content (default prompts + saved edits) ---------------- */
@@ -103,7 +103,17 @@ export async function getPhotos(): Promise<PrivatePhoto[]> {
   return all.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export async function savePhoto(file: File): Promise<PrivatePhoto> {
+const ID_SAFE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const optText = (v: unknown, max: number): string | undefined =>
+  typeof v === "string" ? v.trim().slice(0, max) : undefined;
+/** store a link only when it points at an existing uuid-shaped record id */
+const linkId = (v: unknown): string | undefined =>
+  typeof v === "string" && ID_SAFE.test(v) ? v : undefined;
+
+export async function savePhoto(
+  file: File,
+  extra?: { place?: unknown; person?: unknown }
+): Promise<PrivatePhoto> {
   const ext = MIME_EXT[file.type];
   if (!ext) throw new Error("Only JPG, PNG, WEBP or GIF images are accepted.");
   if (file.size > MAX_PHOTO_BYTES) throw new Error("Image is larger than 8 MB.");
@@ -120,6 +130,10 @@ export async function savePhoto(file: File): Promise<PrivatePhoto> {
     size: file.size,
     addedAt: new Date().toISOString(),
   };
+  const place = linkId(extra?.place);
+  const person = linkId(extra?.person);
+  if (place) photo.place = place;
+  if (person) photo.person = person;
   const all = await readJSON<PrivatePhoto[]>("photos.json", []);
   all.push(photo);
   await writeJSON("photos.json", all);
@@ -128,17 +142,138 @@ export async function savePhoto(file: File): Promise<PrivatePhoto> {
 
 export async function updatePhoto(
   id: string,
-  patch: { caption?: string; date?: string }
+  patch: {
+    caption?: string;
+    date?: string;
+    location?: string;
+    description?: string;
+    place?: unknown;
+    person?: unknown;
+  }
 ): Promise<PrivatePhoto | null> {
   const all = await readJSON<PrivatePhoto[]>("photos.json", []);
   const i = all.findIndex((p) => p.id === id);
   if (i === -1) return null;
   const p = all[i]!;
-  if (typeof patch.caption === "string") p.caption = patch.caption.slice(0, 500);
+  const caption = optText(patch.caption, 500);
+  if (caption !== undefined) p.caption = caption;
   if (typeof patch.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(patch.date)) p.date = patch.date;
+  const location = optText(patch.location, 200);
+  if (location !== undefined) p.location = location;
+  const description = optText(patch.description, 4000);
+  if (description !== undefined) p.description = description;
+  if (patch.place !== undefined) {
+    const v = linkId(patch.place);
+    if (v) p.place = v; else delete p.place;
+  }
+  if (patch.person !== undefined) {
+    const v = linkId(patch.person);
+    if (v) p.person = v; else delete p.person;
+  }
   all[i] = p;
   await writeJSON("photos.json", all);
   return p;
+}
+
+/* ---------------- places ---------------- */
+
+export async function getPlaces(): Promise<PrivatePlace[]> {
+  const all = await readJSON<PrivatePlace[]>("places.json", []);
+  return all.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+}
+
+export async function createPlace(input: { name?: unknown; date?: unknown; memory?: unknown }): Promise<PrivatePlace> {
+  const name = optText(input.name, 160);
+  if (!name) throw new Error("Place name is required.");
+  const place: PrivatePlace = {
+    id: randomUUID(),
+    name,
+    date: typeof input.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(input.date) ? input.date : "",
+    memory: optText(input.memory, 6000) ?? "",
+  };
+  const all = await readJSON<PrivatePlace[]>("places.json", []);
+  all.push(place);
+  await writeJSON("places.json", all);
+  return place;
+}
+
+export async function updatePlace(id: string, patch: { name?: unknown; date?: unknown; memory?: unknown }): Promise<PrivatePlace | null> {
+  const all = await readJSON<PrivatePlace[]>("places.json", []);
+  const i = all.findIndex((p) => p.id === id);
+  if (i === -1) return null;
+  const p = all[i]!;
+  const name = optText(patch.name, 160);
+  if (name) p.name = name;
+  if (typeof patch.date === "string")
+    p.date = /^\d{4}-\d{2}-\d{2}$/.test(patch.date) ? patch.date : "";
+  const memory = optText(patch.memory, 6000);
+  if (memory !== undefined) p.memory = memory;
+  all[i] = p;
+  await writeJSON("places.json", all);
+  return p;
+}
+
+export async function deletePlace(id: string): Promise<boolean> {
+  const all = await readJSON<PrivatePlace[]>("places.json", []);
+  const next = all.filter((p) => p.id !== id);
+  if (next.length === all.length) return false;
+  await writeJSON("places.json", next);
+  // unlink (not delete) any photos that pointed here
+  const photos = await readJSON<PrivatePhoto[]>("photos.json", []);
+  let touched = false;
+  for (const ph of photos) if (ph.place === id) { delete ph.place; touched = true; }
+  if (touched) await writeJSON("photos.json", photos);
+  return true;
+}
+
+/* ---------------- people ---------------- */
+
+export async function getPeople(): Promise<PrivatePerson[]> {
+  const all = await readJSON<PrivatePerson[]>("people.json", []);
+  return all.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function createPerson(input: { name?: unknown; description?: unknown; memory?: unknown }): Promise<PrivatePerson> {
+  const name = optText(input.name, 160);
+  if (!name) throw new Error("Name is required.");
+  const person: PrivatePerson = {
+    id: randomUUID(),
+    name,
+    description: optText(input.description, 2000) ?? "",
+    memory: optText(input.memory, 6000) ?? "",
+  };
+  const all = await readJSON<PrivatePerson[]>("people.json", []);
+  all.push(person);
+  await writeJSON("people.json", all);
+  return person;
+}
+
+export async function updatePerson(id: string, patch: { name?: unknown; description?: unknown; memory?: unknown }): Promise<PrivatePerson | null> {
+  const all = await readJSON<PrivatePerson[]>("people.json", []);
+  const i = all.findIndex((p) => p.id === id);
+  if (i === -1) return null;
+  const p = all[i]!;
+  const name = optText(patch.name, 160);
+  if (name) p.name = name;
+  const description = optText(patch.description, 2000);
+  if (description !== undefined) p.description = description;
+  const memory = optText(patch.memory, 6000);
+  if (memory !== undefined) p.memory = memory;
+  all[i] = p;
+  await writeJSON("people.json", all);
+  return p;
+}
+
+export async function deletePerson(id: string): Promise<boolean> {
+  const all = await readJSON<PrivatePerson[]>("people.json", []);
+  const next = all.filter((p) => p.id !== id);
+  if (next.length === all.length) return false;
+  await writeJSON("people.json", next);
+  const photos = await readJSON<PrivatePhoto[]>("photos.json", []);
+  let touched = false;
+  for (const ph of photos) if (ph.person === id) { delete ph.person; touched = true; }
+  if (touched) await writeJSON("photos.json", photos);
+  return true;
 }
 
 export async function deletePhoto(id: string): Promise<boolean> {

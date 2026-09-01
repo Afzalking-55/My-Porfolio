@@ -93,4 +93,22 @@ export const privateSections: PrivateSectionDef[] = [
     prompt:
       "[Phone numbers and personal accounts that must never appear on the public site. The public contact section links here for this.]",
   },
+  {
+    key: "personal-details",
+    title: "Personal Details",
+    prompt:
+      "[Date of birth · age · phone · anything personal you choose to keep here. Never on the public site, never in the repo — saved to this server only.]",
+  },
+  {
+    key: "personal-side",
+    title: "My Personal Side",
+    prompt:
+      "[The private accounts and the words you live by. Add them here — this text lives only in the local encrypted-at-rest store you control.]",
+  },
+  {
+    key: "interests",
+    title: "My Interests",
+    prompt:
+      "[What you love, off the record. Raw list is fine — no performance metrics here.]",
+  },
 ];

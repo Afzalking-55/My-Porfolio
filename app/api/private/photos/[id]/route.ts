@@ -47,7 +47,14 @@ export async function PATCH(req: Request, { params }: Ctx) {
   const { id } = await params;
   try {
     const body = await req.json();
-    const photo = await updatePhoto(id, { caption: body?.caption, date: body?.date });
+    const photo = await updatePhoto(id, {
+      caption: body?.caption,
+      date: body?.date,
+      location: body?.location,
+      description: body?.description,
+      place: body?.place,
+      person: body?.person,
+    });
     if (!photo) return NextResponse.json({ error: "Not found." }, { status: 404 });
     return NextResponse.json(photo, { headers: { ...NO_STORE } });
   } catch {

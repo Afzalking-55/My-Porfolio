@@ -1,7 +1,6 @@
 import { skillGroups } from "@/content/skills";
 import { Reveal } from "@/components/Reveal";
 import { SectionHead } from "@/components/public/SectionHead";
-import { Ph } from "@/components/Ph";
 
 function Pips({ level }: { level: number }) {
   const n = Math.max(0, Math.min(5, Math.round(level)));
@@ -20,8 +19,8 @@ export function Skills() {
       <div className="container">
         <SectionHead
           index="02"
-          title={<>Tools of the <span className="serif-it">trade</span> — as it grows.</>}
-          lede="Nothing here is invented. Every dashed label is a slot waiting for a skill you actually have — edit content/skills.ts and the dots become your honest self-assessment (1–5)."
+          title={<>Skills, as they actually <span className="serif-it">stand</span>.</>}
+          lede="Only skills in real use — nothing inflated, no invented ratings. Proficiency indicators appear only when an honest self-assessment has been set in content/skills.ts."
         />
 
         <div className="skills-grid">
@@ -32,9 +31,9 @@ export function Skills() {
               <div>
                 {g.skills.map((s, si) => (
                   <div className="skill" key={`${s.name}-${si}`}>
-                    <b><Ph value={s.name}>{s.name}</Ph></b>
-                    <Pips level={s.level} />
-                    <small><Ph value={s.description}>{s.description}</Ph></small>
+                    <b>{s.name}</b>
+                    {typeof s.level === "number" && <Pips level={s.level} />}
+                    <small>{s.description}</small>
                   </div>
                 ))}
               </div>
@@ -43,7 +42,8 @@ export function Skills() {
         </div>
 
         <p className="skills-note">
-          ▸ Levels are self-assessed and editable — delete skills you don&apos;t have, add the ones you do.
+          ▸ No percentages, no stars — just what&apos;s real today. New skills are added in
+          content/skills.ts as they earn their place.
         </p>
       </div>
     </section>

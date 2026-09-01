@@ -1,70 +1,140 @@
 import type { SkillGroup } from "@/lib/types";
 
 /* ============================================================
- * SKILLS
- * ------------------------------------------------------------
- * IMPORTANT: nothing here is invented. Every entry is a slot
- * waiting for your real skill. Replace [placeholders] with the
- * tools/skills you actually use, and delete whole groups you
- * don't want. The level indicator is 1–5 and counts as an
- * honest self-assessment you control.
+ * SKILLS — §4 personalization (Mohamed Afzal).
+ * Only skills the owner actually named. No proficiency levels
+ * are shown because none were provided — if you later want an
+ * honest self-assessment, add `level: 1–5` to a skill and the
+ * dots appear only for that skill.
+ * Descriptions are short rewordings of the owner's own terms —
+ * no added claims, no expert/advanced/senior/certified labels.
  * ============================================================ */
 
 export const skillGroups: SkillGroup[] = [
   {
     title: "AI",
-    caption: "Working with models, prompts and applied AI.",
+    caption: "Applied AI and AI-assisted work.",
     skills: [
-      { name: "[AI tool or concept you're learning]", description: "[What you actually do with it]", level: 2 },
+      {
+        name: "Artificial Intelligence",
+        description: "A core interest area — exploring and applying AI.",
+      },
+      {
+        name: "Working with AI tools & AI-assisted development",
+        description: "Using AI tools to support and speed up development work.",
+      },
     ],
   },
   {
     title: "Automation",
-    caption: "Making repetitive work disappear.",
+    caption: "Designing workflows that remove repetitive work.",
     skills: [
-      { name: "[Automation tool / workflow]", description: "[What it automates for you]", level: 2 },
+      {
+        name: "AI automation",
+        description: "Combining AI with automation for practical workflows.",
+      },
+      {
+        name: "Workflow automation",
+        description: "Mapping processes and letting software handle the repeats.",
+      },
+      {
+        name: "n8n",
+        description: "The tool I use to build automation workflows.",
+      },
     ],
   },
   {
     title: "Web Development",
     caption: "Building for the browser.",
     skills: [
-      { name: "[Language / framework]", description: "[What you have built with it]", level: 2 },
+      {
+        name: "Website development",
+        description: "Building real, working websites.",
+      },
+      {
+        name: "Building & customizing websites",
+        description: "Shaping a site around what it actually needs to do.",
+      },
+      {
+        name: "AI-assisted web development",
+        description: "Using AI coding tools inside the web development workflow.",
+      },
     ],
   },
   {
-    title: "Programming",
-    caption: "Fundamentals and tooling.",
+    title: "Programming / Technical",
+    caption: "Developer tooling and technical practice.",
     skills: [
-      { name: "[Language]", description: "[Where you use it]", level: 2 },
+      {
+        name: "GitHub",
+        description: "Version control and project hosting with GitHub.",
+      },
+      {
+        name: "Working with AI coding agents",
+        description: "Directing AI agents to help plan and write code.",
+      },
+      {
+        name: "Understanding & integrating APIs",
+        description: "Reading documentation and connecting services together.",
+      },
     ],
   },
   {
     title: "Business",
-    caption: "Thinking beyond the code.",
+    caption: "The people-and-deals side of building.",
     skills: [
-      { name: "[Business skill — e.g. pricing, research, ops]", description: "[How you learned it]", level: 2 },
+      {
+        name: "Client acquisition",
+        description: "Finding potential clients and starting the conversation.",
+      },
+      {
+        name: "Sales",
+        description: "Presenting an offer clearly and following through.",
+      },
+      {
+        name: "Client communication",
+        description: "Staying clear, responsive and consistent with clients.",
+      },
+      {
+        name: "Understanding business requirements",
+        description: "Turning what a client needs into a workable brief.",
+      },
     ],
   },
   {
     title: "Entrepreneurship",
-    caption: "Spotting problems, testing ideas.",
+    caption: "Testing ideas, running operations.",
     skills: [
-      { name: "[e.g. idea validation, MVP building]", description: "[Short, honest context]", level: 2 },
+      {
+        name: "Building & experimenting with business ideas",
+        description: "Trying ideas, seeing what holds up, iterating.",
+      },
+      {
+        name: "Agency operations",
+        description: "Handling the day-to-day of running an agency.",
+      },
+      {
+        name: "Developing digital services",
+        description: "Defining and shaping services to offer.",
+      },
     ],
   },
   {
     title: "Creative / Digital",
-    caption: "Visual and content craft.",
+    caption: "Digital presence and ideas.",
     skills: [
-      { name: "[e.g. design, editing, content]", description: "[What you create]", level: 2 },
-    ],
-  },
-  {
-    title: "Other Interests",
-    caption: "Curiosity list — things you actively explore.",
-    skills: [
-      { name: "[Interest]", description: "[Why it matters to you]", level: 2 },
+      {
+        name: "Digital projects",
+        description: "Working across different kinds of digital projects.",
+      },
+      {
+        name: "Personal branding",
+        description: "Building and maintaining a consistent public presence.",
+      },
+      {
+        name: "Content & digital ideas",
+        description: "Developing content concepts and digital ideas.",
+      },
     ],
   },
 ];

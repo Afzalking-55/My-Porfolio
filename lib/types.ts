@@ -25,7 +25,7 @@ export interface Project {
 export interface SkillGroup {
   title: string;
   caption: string;
-  skills: { name: string; description: string; level: number }[];
+  skills: { name: string; description: string; /** optional — shown only if the owner sets a level */ level?: number }[];
 }
 
 export interface TimelineEntry {

@@ -249,7 +249,12 @@ export async function getPeople(): Promise<PrivatePerson[]> {
   return all.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function createPerson(input: { name?: unknown; description?: unknown; memory?: unknown }): Promise<PrivatePerson> {
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function optDob(v: unknown): string {
+  return typeof v === "string" && ISO_DATE_RE.test(v.trim()) ? v.trim() : "";
+}
+
+export async function createPerson(input: { name?: unknown; description?: unknown; memory?: unknown; dob?: unknown }): Promise<PrivatePerson> {
   const name = optText(input.name, 160);
   if (!name) throw new Error("Name is required.");
   const person: PrivatePerson = {
@@ -257,6 +262,7 @@ export async function createPerson(input: { name?: unknown; description?: unknow
     name,
     description: optText(input.description, 2000) ?? "",
     memory: optText(input.memory, 6000) ?? "",
+    dob: optDob(input.dob),
   };
   const all = await readJSON<PrivatePerson[]>("people.json", []);
   all.push(person);
@@ -264,13 +270,14 @@ export async function createPerson(input: { name?: unknown; description?: unknow
   return person;
 }
 
-export async function updatePerson(id: string, patch: { name?: unknown; description?: unknown; memory?: unknown }): Promise<PrivatePerson | null> {
+export async function updatePerson(id: string, patch: { name?: unknown; description?: unknown; memory?: unknown; dob?: unknown }): Promise<PrivatePerson | null> {
   const all = await readJSON<PrivatePerson[]>("people.json", []);
   const i = all.findIndex((p) => p.id === id);
   if (i === -1) return null;
   const p = all[i]!;
   const name = optText(patch.name, 160);
   if (name) p.name = name;
+  if (patch.dob !== undefined) p.dob = optDob(patch.dob);
   const description = optText(patch.description, 2000);
   if (description !== undefined) p.description = description;
   const memory = optText(patch.memory, 6000);

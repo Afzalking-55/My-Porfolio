@@ -26,6 +26,7 @@ export function PrivateCollection({
   linkField,
   emptyText,
   addLabel,
+  showDetail = false,
 }: {
   title: string;
   sub: string;
@@ -34,6 +35,7 @@ export function PrivateCollection({
   linkField: "place" | "person";
   emptyText: string;
   addLabel: string;
+  showDetail?: boolean; // friend cards open a full view (photo, DOB, note, memories)
 }) {
   const [items, setItems] = useState<Item[] | null>(null);
   const [photos, setPhotos] = useState<PhotoMeta[]>([]);
@@ -41,7 +43,13 @@ export function PrivateCollection({
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [draft, setDraft] = useState<(Item & { id?: string }) | null>(null);
+  const [detail, setDetail] = useState<Item | null>(null);
   const [viewer, setViewer] = useState<string | null>(null);
+
+  const dateText = (it: Item) =>
+    linkField === "person"
+      ? it.dob ? `DOB · ${it.dob}` : ""
+      : it.date || "no date set";
   const uploadFor = useRef<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -161,17 +169,21 @@ export function PrivateCollection({
               <article key={it.id} className="p-card">
                 <div style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "flex-start" }}>
                   <div>
-                    <span className="p-kicker">{it.date ? it.date : "no date set"}</span>
+                    {dateText(it) && <span className="p-kicker">{dateText(it)}</span>}
                     <h2 style={{ marginTop: 4 }}>{it.name}</h2>
                   </div>
                   <div style={{ display: "flex", gap: 6 }}>
+                    {showDetail && (
+                      <button className="btn btn-ghost btn-sm" aria-label={`View ${it.name}`}
+                              onClick={() => setDetail(it)}>View</button>
+                    )}
                     <button className="mini-btn" aria-label={`Edit ${it.name}`}
                             onClick={() => setDraft({ ...it })}><PencilIcon size={14} /></button>
                     <button className="mini-btn danger" aria-label={`Delete ${it.name}`}
                             onClick={() => remove(it.id!)}><TrashIcon size={14} /></button>
                   </div>
                 </div>
-                {fields.filter((f) => f.key !== "name" && f.key !== "date").map((f) => (
+                {fields.filter((f) => f.key !== "name" && f.key !== "date" && f.key !== "dob").map((f) => (
                   <div key={f.key}>
                     <span className="p-kicker">{f.label}</span>
                     <p className="p-text" style={{ marginTop: 4 }}>
@@ -233,8 +245,52 @@ export function PrivateCollection({
         </div>
       )}
 
+      {detail && (() => {
+        const mine = photos.filter((p) => p[linkField] === detail.id);
+        const hero = mine[0] ?? null;
+        return (
+          <div className="modal" role="dialog" aria-modal="true" aria-label={`${detail.name} — details`} onClick={() => setDetail(null)}>
+            <div className="modal-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 620 }}>
+              {hero ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={`/api/private/photos/${hero.id}`} alt={hero.caption || detail.name}
+                     onClick={() => setViewer(hero.id)}
+                     style={{ width: "100%", maxHeight: "42vh", objectFit: "contain", borderRadius: 10,
+                              border: "1px solid var(--line)", background: "#000", cursor: "zoom-in" }} />
+              ) : (
+                <div className="faint" style={{ padding: "26px 0", textAlign: "center", fontFamily: "var(--font-mono), monospace", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                  no photo yet
+                </div>
+              )}
+              <h3>{detail.name}</h3>
+              {detail.dob && (
+                <p className="p-text"><span className="p-kicker">Date of birth</span><br />{detail.dob}</p>
+              )}
+              {detail.description && (
+                <p className="p-text"><span className="p-kicker">Note</span><br />{detail.description}</p>
+              )}
+              {detail.memory && (
+                <p className="p-text"><span className="p-kicker">Memory</span><br />{detail.memory}</p>
+              )}
+              {mine.length > 1 && (
+                <div className="photo-strip">
+                  {mine.map((p) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={p.id} src={`/api/private/photos/${p.id}`} alt={p.caption || "photo"}
+                         onClick={() => setViewer(p.id)} loading="lazy" />
+                  ))}
+                </div>
+              )}
+              <div className="modal-actions">
+                <button className="btn btn-ghost btn-sm" onClick={() => setDetail(null)}><XCloseIcon size={13} /> Close</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {viewerPhoto && (
-        <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" onClick={() => setViewer(null)}>
+        <div className="lightbox" style={{ zIndex: 130 }} role="dialog" aria-modal="true" aria-label="Photo viewer" onClick={() => setViewer(null)}>
           <button className="mini-btn lb-close" aria-label="Close viewer" onClick={() => setViewer(null)}>
             <XCloseIcon size={16} />
           </button>

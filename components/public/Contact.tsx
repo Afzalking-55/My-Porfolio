@@ -68,7 +68,7 @@ export function Contact() {
     <section id="contact" className="section">
       <div className="container">
         <SectionHead
-          index="08"
+          index="09"
           title={<>Let&apos;s build something <span className="serif-it">together</span>.</>}
           lede="Open to projects, collaborations and good conversations about AI, automation and starting things from zero."
         />

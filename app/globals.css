@@ -562,6 +562,22 @@ a.ph:hover, button.ph:hover { color: var(--ink); border-color: var(--accent); }
 .err-panel h2 { font-size: 26px; margin-bottom: 8px; }
 .err-panel p { color: var(--dim); font-size: 14px; margin-bottom: 20px; }
 
+
+/* ---------- public achievements & hobbies ---------- */
+.ach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 8px; }
+.ach-card { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+.ach-head { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.ach-head h3 { font-size: 23px; }
+.ach-card .period { font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+.ach-body { color: var(--dim); font-size: 15px; }
+.ach-stats { display: flex; flex-direction: column; }
+.ach-stat { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--dim); }
+.ach-stat b { color: var(--ink); font-family: var(--font-mono), monospace; font-weight: 500; font-size: 14px; letter-spacing: 0.02em; }
+.hobby-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 40px; margin-top: 8px; }
+.hobby-list li { display: flex; align-items: baseline; gap: 16px; padding: 15px 0; border-top: 1px solid var(--line); font-size: 16.5px; }
+.hobby-list .idx { font-family: var(--font-mono), monospace; font-size: 11px; color: var(--faint); letter-spacing: 0.14em; }
+@media (max-width: 720px) { .ach-grid, .hobby-list { grid-template-columns: 1fr; } }
+
 /* ---------- private collections (places / people) ---------- */
 .collection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 26px; }
 @media (max-width: 900px) { .collection-grid { grid-template-columns: 1fr; } }

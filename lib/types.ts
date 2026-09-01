@@ -98,6 +98,7 @@ export interface PrivatePerson {
   name: string;
   description: string; // optional
   memory: string; // optional
+  dob?: string; // optional "YYYY-MM-DD" — PRIVATE ONLY, never rendered publicly
 }
 
 /** editable text of "The Real Me" — merged over content/private.ts defaults */

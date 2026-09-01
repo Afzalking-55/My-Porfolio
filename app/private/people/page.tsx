@@ -12,9 +12,11 @@ export default function PeoplePage() {
       linkField="person"
       addLabel="Add person"
       emptyText="No one added yet — your call, whenever."
+      showDetail
       fields={[
         { key: "name", label: "Name", type: "text", required: true },
-        { key: "description", label: "Short description (optional)", type: "textarea", placeholder: "Who they are to you…" },
+        { key: "dob", label: "Date of birth (optional)", type: "date" },
+        { key: "description", label: "Short personal note (optional)", type: "textarea", placeholder: "Who they are to you…" },
         { key: "memory", label: "Memory (optional)", type: "textarea", placeholder: "A moment worth keeping…" },
       ]}
     />

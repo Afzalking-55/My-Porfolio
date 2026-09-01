@@ -23,6 +23,8 @@ export const site = {
     "experience",
     "education",
     "learning",
+    "achievements",
+    "hobbies",
     "contact",
   ],
 } as const;

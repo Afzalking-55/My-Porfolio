@@ -16,15 +16,21 @@ import type { Project } from "@/lib/types";
 
 export const projects: Project[] = [
   {
-    slug: "project-one",
-    name: "[Project Name]",
+    slug: "zlance",
+    name: "Zlance",
     description:
-      "[One or two sentences: what it does, who it is for, and what you personally built.]",
-    role: "[Your role]",
-    tech: ["[tool]", "[tool]"],
-    status: "IDEA",
-    date: "[Month Year]",
-    categories: ["OTHER"],
+      "An agency project started during my 10th-standard holidays. We directly reached out " +
+      "to second-hand car dealers and other local sellers and offered to promote their listings " +
+      "through Facebook groups — access to approximately 15 groups with a combined audience of " +
+      "around 1.5 million people, where promotional listings were posted for clients. " +
+      "Within roughly 2 months, we acquired 15 clients at ₹1,000 per client.",
+    role:
+      "Client outreach — approaching potential clients, explaining the service, acquiring them, " +
+      "and handling the client side of the project.",
+    tech: ["Facebook groups"],
+    status: "SHIPPED",
+    date: "10th-standard holidays · [year to be added]",
+    categories: ["BUSINESS"],
     image: null,
     liveUrl: null,
     repoUrl: null,

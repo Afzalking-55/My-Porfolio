@@ -9,7 +9,7 @@ export function About() {
       <div className="container">
         <SectionHead
           index="01"
-          title={<>I build to <span className="serif-it">learn</span>, and learn to build.</>}
+          title={<>Learning by <span className="serif-it">building</span>.</>}
           lede={aboutLede}
         />
         <div className="grid-2-55">
@@ -28,13 +28,13 @@ export function About() {
             <div className="card" style={{ position: "sticky", top: 100 }}>
               <span className="eyebrow" style={{ marginBottom: 18 }}>The short version</span>
               <p className="about-manifesto">
-                <span className="serif-it">
-                  {aboutManifesto.strong.replace("I'm here to build", "I'm here to build")}
-                </span>
+                <span className="serif-it">{aboutManifesto.strong}</span>
               </p>
-              <p className="muted" style={{ marginTop: 18, fontSize: 14 }}>
-                {aboutManifesto.note}
-              </p>
+              {aboutManifesto.note && (
+                <p className="muted" style={{ marginTop: 18, fontSize: 14 }}>
+                  {aboutManifesto.note}
+                </p>
+              )}
             </div>
           </Reveal>
         </div>

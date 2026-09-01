@@ -1,46 +1,53 @@
 /* ============================================================
- * ABOUT section copy — each facet is one editable field.
- * Replace [placeholders] with your real answers.
+ * ABOUT section copy — §3 personalization (Mohamed Afzal).
+ * All content is the owner's own wording, lightly polished for
+ * readability. No facts, achievements or claims were added.
  * ============================================================ */
 
 export const aboutFacets = [
   {
     label: "Who I am",
     value:
-      "An ambitious technology enthusiast — early in the journey, deliberate about the direction.",
+      "An ambitious technology enthusiast exploring AI, automation, web development and entrepreneurship.",
   },
   {
-    label: "What I'm interested in",
-    value: "AI, automation, web development, technology and the business side of building.",
+    label: "My interests",
+    value:
+      "Artificial intelligence · AI automation · Web development · Technology · Entrepreneurship · " +
+      "Business · Building digital projects · Learning and experimenting with new technologies.",
   },
   {
-    label: "What I'm learning",
-    value: "[e.g. building agents with the OpenAI API — what you are actually studying right now]",
+    label: "My approach",
+    value:
+      "I learn by actually building things. When I find an idea, I try to turn it into a real project " +
+      "rather than staying in theory.",
   },
   {
-    label: "What I'm building",
-    value: "[one honest sentence about what's on the desk right now]",
+    label: "My current direction",
+    value:
+      "I'm exploring AI, automation, web development and entrepreneurship — working on different " +
+      "projects and learning how technology can be used to solve practical problems.",
   },
   {
     label: "What motivates me",
     value:
-      "Turning ideas into things that actually exist. The distance between a sketch and a working product is where I want to live.",
+      "Creating things, experimenting with ideas, learning new skills — and seeing an idea develop " +
+      "into something real and useful.",
   },
   {
     label: "Long-term direction",
     value:
-      "[where this is going — the grounded version of the Vision section below]",
+      "Building successful projects and businesses, developing strong technical and entrepreneurial " +
+      "skills, and eventually creating things that have real-world value.",
   },
 ];
 
-/** Lead paragraph shown above the About grid. */
+/** Lead paragraph shown under the About heading. */
 export const aboutLede =
-  "I enjoy experimenting with new technologies, shipping small and often, and continuously leveling up while working toward bigger goals.";
+  "Learning by building — taking ideas into real projects, and exploring how technology can solve practical problems.";
 
-/** The quote card. Keep it authentic — or rewrite it entirely. */
+/** The quote card. Owner's own approach, lightly polished — nothing added. */
 export const aboutManifesto = {
-  strong:
-    "I'm not here to pretend I've already made it. I'm here to build — in public, with taste, one working idea at a time — until the story writes itself.",
-  note:
-    "This is the honest baseline: no inflated metrics, no borrowed achievements. Replace this card's copy any time in content/about.ts.",
+  strong: "I enjoy taking an idea and trying to turn it into a real project — rather than only learning theory.",
+  note: "",
 };

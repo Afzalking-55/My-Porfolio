@@ -1,13 +1,3 @@
-/* ============================================================
- * Route protection at the edge.
- * - /private/*          → requires a valid session cookie,
- *                         otherwise redirected to /login
- * - /api/private/*      → requires a valid session cookie,
- *                         otherwise 401 JSON (never redirects an API call)
- * The token is verified with the same secret the login route signs it
- * with; every API route handler ALSO re-verifies it (defense in depth).
- * ============================================================ */
-
 import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/session";
 
